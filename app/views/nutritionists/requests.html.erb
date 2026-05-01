@@ -1,0 +1,19 @@
+<%= content_for :title, "#{t('requests.heading')} | #{@nutritionist.name}" %>
+
+<div class="mb-6 flex items-center justify-between flex-wrap gap-3">
+  <div>
+    <%= link_to root_path, class: "text-sm text-[#3aaa93] hover:underline" do %>
+      &larr; <%= t('back_to_search') %>
+    <% end %>
+    <h1 class="text-2xl font-bold text-gray-900 mt-2"><%= t('requests.heading') %></h1>
+    <p class="text-sm text-gray-500 mt-1"><%= @nutritionist.name %></p>
+  </div>
+  <%= link_to nutritionist_availability_path(@nutritionist),
+        class: "border border-gray-300 hover:border-gray-400 text-gray-700 text-sm font-medium rounded-lg px-4 py-2 transition-colors" do %>
+    <%= t('requests.manage_availability') %>
+  <% end %>
+</div>
+
+<div id="requests-app" data-nutritionist-id="<%= @nutritionist.id %>"></div>
+
+<%= javascript_include_tag "requests_app", "data-turbo-track": "reload", type: "module" %>

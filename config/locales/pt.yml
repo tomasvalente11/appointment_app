@@ -1,0 +1,151 @@
+pt:
+  activerecord:
+    errors:
+      models:
+        appointment_request:
+          attributes:
+            base:
+              duplicate_pending_request: "Já tem um pedido pendente para este nutricionista nesta hora."
+
+  site_name: "Nutrium"
+  tagline: "Encontre um nutricionista perto de si"
+  tagline_professional: "É um profissional de nutrição? Conheça o nosso software"
+  back_to_search: "Voltar à pesquisa"
+
+  days:
+    sunday: "Domingo"
+    monday: "Segunda-feira"
+    tuesday: "Terça-feira"
+    wednesday: "Quarta-feira"
+    thursday: "Quinta-feira"
+    friday: "Sexta-feira"
+    saturday: "Sábado"
+
+  landing:
+    heading: "Como podemos ajudar?"
+    customer_heading: "Encontrar Nutricionista"
+    customer_description: "Pesquise profissionais por nome, especialidade ou localização perto de si."
+    customer_btn: "Começar a pesquisar"
+    nutritionist_heading: "Sou Nutricionista"
+    nutritionist_description: "Aceda aos seus pedidos de consulta e gira a sua disponibilidade."
+    select_prompt: "Selecione o seu nome para continuar"
+
+  nutritionists:
+    find_tab: "Encontrar Nutricionista"
+    access_tab: "Acesso Nutricionista"
+    search:
+      name_placeholder: "Nome ou serviço do nutricionista"
+      location_placeholder: "Cidade (ex. Porto)"
+      button: "Pesquisar"
+    results:
+      empty_heading: "Nenhum nutricionista encontrado"
+      empty_hint: "Tente um nome ou localização diferente"
+      count:
+        one: "1 nutricionista encontrado"
+        other: "%{count} nutricionistas encontrados"
+      schedule_btn: "Agendar Consulta"
+      website_btn: "Website"
+    access:
+      heading: "Acesso Nutricionista"
+      description: "Selecione o seu nome para gerir as suas consultas e disponibilidade."
+      select_placeholder: "Selecione o seu nome..."
+      view_requests: "Ver Pedidos"
+      manage_availability: "Gerir Disponibilidade"
+
+  modal:
+    heading: "Agendar Consulta"
+    step_nutritionist: "Nutricionista"
+    step_datetime: "Data e Hora"
+    step_details: "Os seus dados"
+    label_nutritionist: "Nutricionista"
+    search_placeholder: "Pesquisar por nome..."
+    any_service: "Qualquer serviço"
+    label_service: "Serviço"
+    select_service: "Selecione um serviço"
+    label_date: "Data"
+    label_times: "Horários disponíveis"
+    no_slots: "Sem horários disponíveis nesta data."
+    label_name: "O seu nome"
+    name_placeholder: "Nome completo"
+    label_email: "O seu email"
+    summary_nutritionist: "Nutricionista:"
+    summary_service: "Serviço:"
+    summary_date: "Data:"
+    summary_time: "Hora:"
+    fill_name_email: "Por favor preencha o seu nome e email."
+    btn_next: "Seguinte"
+    btn_back: "Voltar"
+    btn_confirm: "Confirmar"
+    btn_sending: "A enviar..."
+    success_heading: "Pedido enviado!"
+    success_message: "O nutricionista irá analisar o seu pedido e receberá um email com o resultado."
+    success_close: "Fechar"
+
+  requests:
+    heading: "Pedidos de Consulta"
+    subheading: "Aceite ou rejeite novos pedidos pendentes"
+    manage_availability: "Gerir Disponibilidade"
+    filters:
+      all: "Todos"
+      pending: "Pendentes"
+      answered: "Respondidos"
+    loading: "A carregar..."
+    error: "Falha ao carregar os pedidos."
+    empty:
+      pending: "Sem pedidos pendentes."
+      answered: "Sem pedidos respondidos ainda."
+      all: "Sem pedidos de consulta ainda."
+      hint: "Os pedidos dos clientes aparecerão aqui."
+    toast:
+      accepted: "Pedido aceite, cliente notificado por email."
+      rejected: "Pedido rejeitado, cliente notificado por email."
+    action:
+      answer_request: "Responder pedido"
+      accept: "Aceitar"
+      reject: "Rejeitar"
+      reject_heading: "Rejeitar pedido"
+      reject_hint: "Indique opcionalmente um motivo. Será incluído no email enviado ao cliente."
+      reject_placeholder: "ex. Horário indisponível, por favor reagende."
+      cancel: "Cancelar"
+      confirm_rejection: "Confirmar rejeição"
+    status:
+      accepted: "aceite"
+      pending: "pendente"
+      rejected: "rejeitado"
+    no_service: "Sem serviço especificado"
+
+  services:
+    names:
+      first_appointment: "Primeira Consulta"
+      follow_up: "Consulta de Acompanhamento"
+      online_consultation: "Consulta Online"
+    locations:
+      remote: "Remoto"
+
+  availability:
+    heading: "Horário de trabalho"
+    to: "às"
+    save: "Guardar disponibilidade"
+
+  mailer:
+    heading: "Atualização do Pedido de Consulta"
+    greeting: "Olá %{name},"
+    note_from_nutritionist: "Nota do nutricionista:"
+    nutritionist: "Nutricionista:"
+    service: "Serviço:"
+    location: "Localização:"
+    datetime: "Data e hora:"
+    footer: "Este email foi enviado pelo sistema de consultas Nutrium."
+    messages:
+      accepted:
+        subject: "A sua consulta foi confirmada!"
+        body: "Ótimas notícias, a sua consulta foi confirmada!"
+      rejected:
+        subject: "Atualização sobre o seu pedido de consulta"
+        body: "Infelizmente, o seu pedido de consulta não foi aceite pelo nutricionista."
+      invalidated:
+        subject: "O seu pedido de consulta foi cancelado"
+        body: "Submeteu um novo pedido de consulta, pelo que este foi automaticamente cancelado."
+      slot_taken:
+        subject: "Atualização sobre o seu pedido de consulta"
+        body: "Infelizmente, o horário que pediu já foi reservado por outra marcação."

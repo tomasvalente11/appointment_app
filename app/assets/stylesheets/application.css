@@ -1,0 +1,21 @@
+.flatpickr-day.available-day {
+  font-weight: 600;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+  background: #16a34a;
+  border-color: #16a34a;
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+  color: #d1d5db;
+  text-decoration: line-through;
+}
+
+.flatpickr-calendar {
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}

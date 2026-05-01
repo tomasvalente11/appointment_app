@@ -1,0 +1,51 @@
+<%= content_for :title, "#{t('availability.heading')} | #{@nutritionist.name}" %>
+
+<div class="max-w-xl mx-auto">
+  <div class="mb-6">
+    <%= link_to root_path, class: "text-sm text-[#3aaa93] hover:underline" do %>
+      &larr; <%= t('back_to_search') %>
+    <% end %>
+    <h1 class="text-2xl font-bold text-gray-900 mt-2"><%= t('availability.heading') %></h1>
+    <p class="text-sm text-gray-500 mt-1"><%= @nutritionist.name %></p>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+    <%= form_with url: nutritionist_availability_path(@nutritionist), method: :patch, local: true do |f| %>
+      <div class="space-y-3">
+        <% AvailabilitySlot::DAYS.each_with_index do |day_name, day_index| %>
+          <% slot = @slots_by_day[day_index] %>
+          <% active = slot.present? %>
+          <div class="flex items-center gap-4 py-2 border-b border-gray-100 last:border-0">
+            <div class="w-28 flex items-center gap-2">
+              <input type="checkbox"
+                     name="availability[<%= day_index %>][active]"
+                     value="1"
+                     id="day_<%= day_index %>"
+                     <%= "checked" if active %>
+                     class="rounded border-gray-300 text-[#3aaa93] focus:ring-[#3aaa93]/40">
+              <label for="day_<%= day_index %>" class="text-sm font-medium text-gray-700 select-none cursor-pointer">
+                <%= t("days.#{day_name.downcase}") %>
+              </label>
+            </div>
+            <div class="flex items-center gap-2 flex-1">
+              <input type="time"
+                     name="availability[<%= day_index %>][start_time]"
+                     value="<%= slot&.start_time&.strftime('%H:%M') || '09:00' %>"
+                     class="border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#3aaa93]/40 <%= 'opacity-40' unless active %>">
+              <span class="text-gray-400 text-sm"><%= t('availability.to') %></span>
+              <input type="time"
+                     name="availability[<%= day_index %>][end_time]"
+                     value="<%= slot&.end_time&.strftime('%H:%M') || '17:00' %>"
+                     class="border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#3aaa93]/40 <%= 'opacity-40' unless active %>">
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <%= f.submit t('availability.save'),
+              class: "bg-[#3aaa93] hover:bg-[#2d9281] text-white font-medium rounded-lg px-6 py-2.5 text-sm cursor-pointer transition-colors" %>
+      </div>
+    <% end %>
+  </div>
+</div>
