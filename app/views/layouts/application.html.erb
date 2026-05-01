@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <title><%= content_for(:title) || t('site_name') %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="icon" href="/nutrium-logo.svg" type="image/png">
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "flatpickr", "data-turbo-track": "reload" %>
+    <script>
+      window.I18n = <%= raw({ locale: I18n.locale.to_s, modal: I18n.t('modal'), requests: I18n.t('requests') }.to_json) %>
+    </script>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+
+    <header class="bg-[#3aaa93]">
+      <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <%= link_to root_path, class: "flex items-center gap-2 text-white font-bold text-xl tracking-tight" do %>
+          <%= image_tag "nutrium-logo.svg", class: "w-8 h-8 flex-shrink-0", style: "filter:brightness(0) invert(1)", width: 32, height: 32, alt: "" %>
+          nutrium
+        <% end %>
+        <div class="flex items-center gap-5">
+          <a href="https://nutrium.com/pt" target="_blank" rel="noopener noreferrer" class="text-white/90 text-sm hidden lg:block hover:text-white transition-colors">
+            <%= t('tagline_professional') %> &rarr;
+          </a>
+          <div class="flex gap-1 text-xs font-semibold">
+            <%= link_to "EN", locale_path("en"),
+                  class: "px-2 py-1 rounded transition-colors #{I18n.locale == :en ? 'bg-white/20 text-white' : 'text-white/60 hover:text-white'}" %>
+            <%= link_to "PT", locale_path("pt"),
+                  class: "px-2 py-1 rounded transition-colors #{I18n.locale == :pt ? 'bg-white/20 text-white' : 'text-white/60 hover:text-white'}" %>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <%= yield :hero %>
+
+    <% if notice.present? %>
+      <div class="max-w-6xl mx-auto px-4 mt-4">
+        <div class="bg-teal-50 border border-teal-200 text-teal-800 rounded-lg px-4 py-3 text-sm"><%= notice %></div>
+      </div>
+    <% end %>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+      <%= yield %>
+    </main>
+
+  </body>
+</html>

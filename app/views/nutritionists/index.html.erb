@@ -1,0 +1,289 @@
+<%= content_for :title, "#{t('nutritionists.find_tab')} | #{t('site_name')}" %>
+
+<%# Hero search section — rendered into layout's yield :hero slot %>
+<% content_for :hero do %>
+  <div class="bg-[#3aaa93] pt-2 pb-10">
+    <div class="max-w-6xl mx-auto px-4">
+      <%= form_with url: find_nutritionists_path, method: :get, local: true,
+            class: "flex flex-col gap-3 sm:flex-row",
+            data: { controller: "radius-toggle" } do |f| %>
+        <div class="flex-1">
+          <%= f.text_field :q,
+                value: params[:q],
+                placeholder: t('nutritionists.search.name_placeholder'),
+                class: "bg-white border-0 focus:outline-none focus:ring-2 focus:ring-white/50 px-4 py-3 rounded-lg text-sm w-full shadow-sm" %>
+        </div>
+        <div class="flex-1 relative">
+          <%= f.text_field :location,
+                value: params[:location],
+                placeholder: t('nutritionists.search.location_placeholder'),
+                data: { radius_toggle_target: "location", action: "input->radius-toggle#update" },
+                class: "bg-white border-0 focus:outline-none focus:ring-2 focus:ring-white/50 pl-4 pr-10 py-3 rounded-lg text-sm w-full shadow-sm" %>
+          <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#3aaa93] pointer-events-none" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div data-radius-toggle-target="radius" class="sm:w-36">
+          <%= f.select :radius,
+                [['+ 25 km', 25], ['+ 50 km', 50], ['+ 100 km', 100], ['+ 200 km', 200]],
+                { selected: params[:radius]&.to_i || 50 },
+                class: "bg-white border-0 focus:outline-none focus:ring-2 focus:ring-white/50 h-full px-3 py-3 rounded-lg text-sm w-full shadow-sm cursor-pointer" %>
+        </div>
+        <%= f.submit t('nutritionists.search.button'),
+              class: "bg-[#e07a60] hover:bg-[#cc6a52] cursor-pointer font-semibold px-8 py-3 rounded-lg text-sm text-white transition-colors shadow-sm" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<div data-controller="appointment-modal">
+  <div>
+    <% if @nutritionists.empty? %>
+      <div class="py-24 text-center text-gray-400">
+        <svg class="w-12 h-12 mx-auto mb-4 opacity-40" width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <p class="font-semibold text-lg"><%= t('nutritionists.results.empty_heading') %></p>
+        <p class="mt-1 text-sm"><%= t('nutritionists.results.empty_hint') %></p>
+      </div>
+    <% else %>
+      <p class="mb-5 text-gray-500 text-sm"><%= t('nutritionists.results.count', count: @nutritionists.size) %></p>
+      <div class="space-y-4">
+        <% @nutritionists.each do |nutritionist| %>
+          <div class="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex gap-5 items-start">
+
+              <%# Avatar %>
+              <div class="flex-shrink-0">
+                <% if nutritionist.avatar_url.present? %>
+                  <img src="<%= nutritionist.avatar_url %>"
+                       alt="<%= nutritionist.name %>"
+                       class="h-16 w-16 rounded-full object-cover ring-2 ring-[#3aaa93]/20">
+                <% else %>
+                  <div class="h-16 w-16 rounded-full bg-[#3aaa93]/10 flex items-center justify-center ring-2 ring-[#3aaa93]/20">
+                    <span class="text-[#3aaa93] font-bold text-xl"><%= nutritionist.name.first %></span>
+                  </div>
+                <% end %>
+              </div>
+
+              <%# Main content %>
+              <div class="flex-1 min-w-0">
+
+                <%# Service badges %>
+                <% if nutritionist.services.any? %>
+                  <div class="flex flex-wrap gap-1.5 mb-2">
+                    <% nutritionist.services.first(3).each do |svc| %>
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#3aaa93]/10 text-[#3aaa93] border border-[#3aaa93]/20 uppercase tracking-wide">
+                        <svg class="w-3 h-3" width="12" height="12" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        <%= t("services.names.#{svc.name.parameterize(separator: '_')}", default: svc.name) %>
+                      </span>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <%# Name + license %>
+                <div class="flex flex-wrap items-baseline gap-2 mb-0.5">
+                  <h2 class="text-[#3aaa93] font-semibold text-xl leading-tight"><%= nutritionist.name %></h2>
+                  <% if nutritionist.license_number.present? %>
+                    <span class="text-gray-400 text-sm">&bull; <%= nutritionist.license_number %></span>
+                  <% end %>
+                </div>
+
+                <%# Bio %>
+                <% if nutritionist.bio.present? %>
+                  <p class="text-gray-400 text-sm mb-3 line-clamp-2"><%= nutritionist.bio %></p>
+                <% end %>
+
+                <%# Service details %>
+                <% if nutritionist.services.any? %>
+                  <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+                    <%# Left: location info %>
+                    <div class="flex items-start gap-2">
+                      <svg class="w-4 h-4 text-[#3aaa93] flex-shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                      </svg>
+                      <div class="space-y-0.5 text-sm">
+                        <% nutritionist.services.each do |svc| %>
+                          <p class="text-[#3aaa93] font-medium"><%= t("services.names.#{svc.name.parameterize(separator: '_')}", default: svc.name) %></p>
+                          <p class="text-gray-500"><%= t("services.locations.#{svc.location.parameterize(separator: '_')}", default: svc.location) %></p>
+                        <% end %>
+                      </div>
+                    </div>
+
+                    <%# Right: service type + price %>
+                    <div class="space-y-2 text-sm">
+                      <% nutritionist.services.each do |svc| %>
+                        <div class="flex items-center gap-2 text-gray-500">
+                          <svg class="w-4 h-4 text-[#3aaa93] flex-shrink-0" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                          </svg>
+                          <span><%= t("services.names.#{svc.name.parameterize(separator: '_')}", default: svc.name) %></span>
+                          <span class="text-gray-300">&middot;</span>
+                          <svg class="w-4 h-4 text-[#3aaa93] flex-shrink-0" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
+                          </svg>
+                          <span>&euro; <%= svc.price %></span>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+
+              </div>
+
+              <%# Action buttons %>
+              <div class="flex-shrink-0 flex flex-col gap-2 mt-1" style="min-width:160px">
+                <button
+                  data-action="click->appointment-modal#open"
+                  data-nutritionist-id="<%= nutritionist.id %>"
+                  data-nutritionist-name="<%= nutritionist.name %>"
+                  data-services="<%= nutritionist.services.map { |s| { id: s.id, name: s.name, duration: s.duration } }.to_json %>"
+                  class="bg-[#e07a60]/10 hover:bg-[#e07a60] border border-[#e07a60] text-[#e07a60] hover:text-white font-medium px-4 py-2.5 rounded-lg text-sm transition-colors text-center w-full">
+                  <%= t('nutritionists.results.schedule_btn') %>
+                </button>
+                <button disabled class="border border-gray-200 text-gray-400 font-medium px-4 py-2.5 rounded-lg text-sm text-center w-full cursor-default">
+                  <%= t('nutritionists.results.website_btn') %>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+
+  <%# Appointment Modal %>
+  <div id="appointment-modal"
+       data-appointment-modal-target="modal"
+       class="fixed hidden inset-0 items-center justify-center p-4 z-50 flex">
+    <div class="absolute bg-black/50 inset-0" data-action="click->appointment-modal#close"></div>
+    <div class="bg-white max-h-[90vh] max-w-md overflow-y-auto relative rounded-2xl shadow-xl w-full">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-semibold text-gray-900 text-lg"><%= t('modal.heading') %></h2>
+          <button data-action="click->appointment-modal#close" class="leading-none text-2xl text-gray-400 hover:text-gray-600">&times;</button>
+        </div>
+
+        <%# Step indicator %>
+        <div class="flex gap-2 items-center mb-6 text-gray-400 text-xs" data-appointment-modal-target="steps">
+          <span data-step="1" class="font-medium step-label text-[#3aaa93]"><%= t('modal.step_nutritionist') %></span>
+          <span>&rsaquo;</span>
+          <span data-step="2" class="step-label"><%= t('modal.step_datetime') %></span>
+          <span>&rsaquo;</span>
+          <span data-step="3" class="step-label"><%= t('modal.step_details') %></span>
+        </div>
+
+        <%# Step 1 %>
+        <div data-appointment-modal-target="step1">
+          <div class="space-y-4">
+            <div>
+              <label class="block font-medium mb-1 text-gray-700 text-sm"><%= t('modal.label_nutritionist') %></label>
+              <input type="text"
+                     data-appointment-modal-target="nutritionistSearch"
+                     data-action="input->appointment-modal#onNutritionistSearch"
+                     placeholder="<%= t('modal.search_placeholder') %>"
+                     class="border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3aaa93]/40 px-3 py-2 rounded-lg text-sm w-full">
+              <input type="hidden" data-appointment-modal-target="nutritionistId">
+              <div data-appointment-modal-target="nutritionistSuggestions"
+                   class="bg-white border border-gray-200 divide-gray-100 divide-y hidden max-h-40 mt-1 overflow-y-auto rounded-lg shadow-sm"></div>
+            </div>
+            <div data-appointment-modal-target="serviceField" class="hidden">
+              <label class="block font-medium mb-1 text-gray-700 text-sm"><%= t('modal.label_service') %></label>
+              <select data-appointment-modal-target="serviceSelect"
+                      data-action="change->appointment-modal#onServiceChange"
+                      class="border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3aaa93]/40 px-3 py-2 rounded-lg text-sm w-full">
+                <option value=""><%= t('modal.select_service') %></option>
+              </select>
+            </div>
+          </div>
+          <button data-action="click->appointment-modal#goToStep2"
+                  class="bg-[#3aaa93] hover:bg-[#2d9281] font-medium mt-6 py-2.5 rounded-lg text-sm text-white transition-colors w-full">
+            <%= t('modal.btn_next') %>
+          </button>
+        </div>
+
+        <%# Step 2 %>
+        <div data-appointment-modal-target="step2" class="hidden">
+          <div class="space-y-4">
+            <div>
+              <label class="block font-medium mb-1 text-gray-700 text-sm"><%= t('modal.label_date') %></label>
+              <input type="date"
+                     data-appointment-modal-target="dateInput"
+                     data-action="change->appointment-modal#onDateChange"
+                     class="border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3aaa93]/40 px-3 py-2 rounded-lg text-sm w-full">
+              <p data-appointment-modal-target="dateHint" class="hidden mt-1 text-gray-400 text-xs"></p>
+            </div>
+            <div data-appointment-modal-target="timeField" class="hidden">
+              <label class="block font-medium mb-2 text-gray-700 text-sm"><%= t('modal.label_times') %></label>
+              <div data-appointment-modal-target="timeSlots" class="gap-2 grid grid-cols-4"></div>
+            </div>
+            <p data-appointment-modal-target="noSlots" class="hidden text-gray-400 text-sm"><%= t('modal.no_slots') %></p>
+          </div>
+          <div class="flex gap-2 mt-6">
+            <button data-action="click->appointment-modal#goToStep1"
+                    class="border border-gray-300 flex-1 font-medium hover:border-gray-400 py-2.5 rounded-lg text-gray-700 text-sm transition-colors">
+              <%= t('modal.btn_back') %>
+            </button>
+            <button data-action="click->appointment-modal#goToStep3"
+                    class="bg-[#3aaa93] hover:bg-[#2d9281] flex-1 font-medium py-2.5 rounded-lg text-sm text-white transition-colors">
+              <%= t('modal.btn_next') %>
+            </button>
+          </div>
+        </div>
+
+        <%# Step 3 %>
+        <div data-appointment-modal-target="step3" class="hidden">
+          <div class="space-y-4">
+            <div>
+              <label class="block font-medium mb-1 text-gray-700 text-sm"><%= t('modal.label_name') %></label>
+              <input type="text"
+                     data-appointment-modal-target="guestName"
+                     placeholder="<%= t('modal.name_placeholder') %>"
+                     class="border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3aaa93]/40 px-3 py-2 rounded-lg text-sm w-full">
+            </div>
+            <div>
+              <label class="block font-medium mb-1 text-gray-700 text-sm"><%= t('modal.label_email') %></label>
+              <input type="email"
+                     data-appointment-modal-target="guestEmail"
+                     placeholder="email@example.com"
+                     class="border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3aaa93]/40 px-3 py-2 rounded-lg text-sm w-full">
+            </div>
+            <div data-appointment-modal-target="summaryBox" class="bg-gray-50 p-3 rounded-lg space-y-1 text-gray-600 text-sm"></div>
+          </div>
+          <p data-appointment-modal-target="formError" class="hidden mt-3 text-red-500 text-sm"></p>
+          <div class="flex gap-2 mt-6">
+            <button data-action="click->appointment-modal#goToStep2"
+                    class="border border-gray-300 flex-1 font-medium hover:border-gray-400 py-2.5 rounded-lg text-gray-700 text-sm transition-colors">
+              <%= t('modal.btn_back') %>
+            </button>
+            <button data-action="click->appointment-modal#submit"
+                    data-appointment-modal-target="submitBtn"
+                    class="bg-[#e07a60] hover:bg-[#cc6a52] flex-1 font-medium py-2.5 rounded-lg text-sm text-white transition-colors">
+              <%= t('modal.btn_confirm') %>
+            </button>
+          </div>
+        </div>
+
+        <%# Success %>
+        <div data-appointment-modal-target="success" class="hidden py-6 text-center">
+          <div class="h-14 w-14 rounded-full bg-[#3aaa93]/10 flex items-center justify-center mb-4 mx-auto">
+            <svg class="w-7 h-7 text-[#3aaa93]" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <h3 class="font-semibold mb-1 text-gray-900"><%= t('modal.success_heading') %></h3>
+          <p class="text-gray-500 text-sm"><%= t('modal.success_message') %></p>
+          <button data-action="click->appointment-modal#close"
+                  class="hover:underline mt-4 text-[#3aaa93] text-sm"><%= t('modal.success_close') %></button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

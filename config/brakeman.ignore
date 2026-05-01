@@ -1,0 +1,12 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "5259e945354957bb8ba456d34add15f18baa2541d217396bdea736e1a20718c1",
+      "note": "False positive: lat/lng are Float values returned by Geocoder and enforced with Float(). sanitize_sql_array is used in haversine_sql to prevent injection."
+    },
+    {
+      "fingerprint": "bf07801b2847ea01bf8c02bd431b8031ddd9fd5f06aa96212d36da8b40f7f42c",
+      "note": "False positive: lat/lng are Float values returned by Geocoder and enforced with Float(). sanitize_sql_array is used in haversine_sql to prevent injection."
+    }
+  ]
+}

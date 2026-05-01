@@ -1,0 +1,151 @@
+en:
+  activerecord:
+    errors:
+      models:
+        appointment_request:
+          attributes:
+            base:
+              duplicate_pending_request: "You already have a pending request for this nutritionist at this time."
+
+  site_name: "Nutrium"
+  tagline: "Find a nutritionist near you"
+  tagline_professional: "Are you a nutrition professional? Get to know our software"
+  back_to_search: "Back to search"
+
+  days:
+    sunday: "Sunday"
+    monday: "Monday"
+    tuesday: "Tuesday"
+    wednesday: "Wednesday"
+    thursday: "Thursday"
+    friday: "Friday"
+    saturday: "Saturday"
+
+  landing:
+    heading: "How can we help you today?"
+    customer_heading: "Find a Nutritionist"
+    customer_description: "Search professionals by name, specialty, or location near you."
+    customer_btn: "Start searching"
+    nutritionist_heading: "I'm a Nutritionist"
+    nutritionist_description: "Access your appointment requests and manage your availability."
+    select_prompt: "Select your name to continue"
+
+  nutritionists:
+    find_tab: "Find a Nutritionist"
+    access_tab: "Nutritionist Access"
+    search:
+      name_placeholder: "Nutritionist or service name"
+      location_placeholder: "City (e.g. Porto)"
+      button: "Search"
+    results:
+      empty_heading: "No nutritionists found"
+      empty_hint: "Try a different name or location"
+      count:
+        one: "1 nutritionist found"
+        other: "%{count} nutritionists found"
+      schedule_btn: "Schedule Appointment"
+      website_btn: "Website"
+    access:
+      heading: "Nutritionist Access"
+      description: "Select your name to manage your appointments and availability."
+      select_placeholder: "Select your name..."
+      view_requests: "View Requests"
+      manage_availability: "Manage Availability"
+
+  modal:
+    heading: "Schedule Appointment"
+    step_nutritionist: "Nutritionist"
+    step_datetime: "Date & Time"
+    step_details: "Your details"
+    label_nutritionist: "Nutritionist"
+    search_placeholder: "Search by name..."
+    any_service: "Any service"
+    label_service: "Service"
+    select_service: "Select a service"
+    label_date: "Date"
+    label_times: "Available times"
+    no_slots: "No available slots on this date."
+    label_name: "Your name"
+    name_placeholder: "Full name"
+    label_email: "Your email"
+    summary_nutritionist: "Nutritionist:"
+    summary_service: "Service:"
+    summary_date: "Date:"
+    summary_time: "Time:"
+    fill_name_email: "Please fill in your name and email."
+    btn_next: "Next"
+    btn_back: "Back"
+    btn_confirm: "Confirm"
+    btn_sending: "Sending..."
+    success_heading: "Request sent!"
+    success_message: "The nutritionist will review your request and you'll receive an email with the outcome."
+    success_close: "Close"
+
+  requests:
+    heading: "Appointment Requests"
+    subheading: "Accept or reject new pending requests"
+    manage_availability: "Manage Availability"
+    filters:
+      all: "All"
+      pending: "Pending"
+      answered: "Answered"
+    loading: "Loading..."
+    error: "Failed to load requests."
+    empty:
+      pending: "No pending requests."
+      answered: "No answered requests yet."
+      all: "No appointment requests yet."
+      hint: "Requests from guests will appear here."
+    toast:
+      accepted: "Request accepted, guest notified by email."
+      rejected: "Request rejected, guest notified by email."
+    action:
+      answer_request: "Answer request"
+      accept: "Accept"
+      reject: "Reject"
+      reject_heading: "Reject request"
+      reject_hint: "Optionally provide a reason. It will be included in the email sent to the guest."
+      reject_placeholder: "e.g. Slot no longer available, please reschedule."
+      cancel: "Cancel"
+      confirm_rejection: "Confirm rejection"
+    status:
+      accepted: "accepted"
+      pending: "pending"
+      rejected: "rejected"
+    no_service: "No service specified"
+
+  services:
+    names:
+      first_appointment: "First Appointment"
+      follow_up: "Follow-up"
+      online_consultation: "Online Consultation"
+    locations:
+      remote: "Remote"
+
+  availability:
+    heading: "Working hours"
+    to: "to"
+    save: "Save availability"
+
+  mailer:
+    heading: "Appointment Request Update"
+    greeting: "Hi %{name},"
+    note_from_nutritionist: "Note from nutritionist:"
+    nutritionist: "Nutritionist:"
+    service: "Service:"
+    location: "Location:"
+    datetime: "Date & time:"
+    footer: "This email was sent by the Nutrium appointment system."
+    messages:
+      accepted:
+        subject: "Your appointment was confirmed!"
+        body: "Great news, your appointment has been confirmed!"
+      rejected:
+        subject: "Update on your appointment request"
+        body: "Unfortunately, your appointment request was not accepted by the nutritionist."
+      invalidated:
+        subject: "Your appointment request was cancelled"
+        body: "You submitted a new appointment request, so this one has been automatically cancelled."
+      slot_taken:
+        subject: "Update on your appointment request"
+        body: "Unfortunately, the time slot you requested has been taken by another booking."

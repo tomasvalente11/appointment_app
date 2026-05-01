@@ -1,0 +1,20 @@
+<%= t('mailer.heading') %>
+<%= '=' * t('mailer.heading').length %>
+
+<%= t('mailer.greeting', name: @request.guest_name) %>
+
+<%= @body %>
+<% if @custom_note %>
+
+<%= t('mailer.note_from_nutritionist') %> <%= @custom_note %>
+<% end %>
+
+<%= t('mailer.nutritionist') %> <%= @nutritionist.name %>
+<% if @service %>
+<%= t('mailer.service') %>      <%= @service.name %>
+<%= t('mailer.location') %>     <%= @service.location %>
+<% end %>
+<%= t('mailer.datetime') %>  <%= @request.requested_at.strftime("%d %B %Y, %H:%M") %>
+
+--
+<%= t('mailer.footer') %>

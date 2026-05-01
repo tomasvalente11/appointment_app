@@ -1,0 +1,62 @@
+<%= content_for :title, t('site_name') %>
+
+<div class="max-w-2xl mx-auto py-12">
+  <p class="text-center text-gray-500 mb-10 text-lg"><%= t('landing.heading') %></p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
+
+    <%# Customer card %>
+    <%= link_to find_nutritionists_path, class: "group block bg-white border border-gray-100 rounded-2xl p-8 shadow-sm hover:shadow-md hover:border-[#3aaa93]/30 transition-all text-center" do %>
+      <div class="h-16 w-16 rounded-full bg-[#3aaa93]/10 flex items-center justify-center mx-auto mb-5">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3aaa93" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+      <h2 class="text-gray-900 font-semibold text-lg mb-2"><%= t('landing.customer_heading') %></h2>
+      <p class="text-gray-500 text-sm mb-6"><%= t('landing.customer_description') %></p>
+      <span class="inline-block bg-[#3aaa93] group-hover:bg-[#2d9281] text-white font-medium px-5 py-2.5 rounded-lg text-sm transition-colors">
+        <%= t('landing.customer_btn') %> &rarr;
+      </span>
+    <% end %>
+
+    <%# Nutritionist card %>
+    <div class="bg-white border border-gray-100 rounded-2xl p-8 shadow-sm text-center"
+         data-controller="nutritionist-selector"
+         data-nutritionist-selector-list-value="<%= @all_nutritionists.map { |n| { id: n.id, name: n.name } }.to_json %>">
+
+      <div class="h-16 w-16 rounded-full bg-[#3aaa93]/10 flex items-center justify-center mx-auto mb-5">
+        <%= image_tag "nutrium-logo.svg", width: 28, height: 28, alt: "",
+              style: "display:block" %>
+      </div>
+      <h2 class="text-gray-900 font-semibold text-lg mb-2"><%= t('landing.nutritionist_heading') %></h2>
+      <p class="text-gray-500 text-sm mb-6"><%= t('landing.nutritionist_description') %></p>
+
+      <div class="relative text-left">
+        <input type="text"
+               data-nutritionist-selector-target="search"
+               data-action="input->nutritionist-selector#onSearch focus->nutritionist-selector#onFocus"
+               placeholder="<%= t('nutritionists.access.select_placeholder') %>"
+               autocomplete="off"
+               class="border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3aaa93]/40 px-3 py-2.5 rounded-lg text-sm w-full">
+        <input type="hidden" data-nutritionist-selector-target="selectedId">
+        <div data-nutritionist-selector-target="dropdown"
+             class="absolute bg-white border border-gray-200 hidden left-0 max-h-48 mt-1 overflow-y-auto right-0 rounded-lg shadow-lg z-10"></div>
+      </div>
+
+      <div data-nutritionist-selector-target="actions" class="hidden mt-4 flex flex-col gap-2">
+        <a data-nutritionist-selector-target="requestsLink"
+           href="#"
+           class="block bg-[#3aaa93] hover:bg-[#2d9281] text-white font-medium px-4 py-2.5 rounded-lg text-sm transition-colors text-center">
+          <%= t('nutritionists.access.view_requests') %>
+        </a>
+        <a data-nutritionist-selector-target="availabilityLink"
+           href="#"
+           class="block border border-gray-300 hover:border-gray-400 text-gray-700 font-medium px-4 py-2.5 rounded-lg text-sm transition-colors text-center">
+          <%= t('nutritionists.access.manage_availability') %>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
