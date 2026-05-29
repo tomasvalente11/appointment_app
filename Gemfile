@@ -8,7 +8,7 @@ gem "puma", ">= 5.0"
 gem "bootsnap", require: false
 gem "algolia"
 gem "geocoder"
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.0"
 gem "jsbundling-rails"
 gem "kamal", require: false
 gem "solid_cable"
